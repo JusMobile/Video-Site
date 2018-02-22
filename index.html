@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JusMobile</title>
+
+    <link rel="icon" href="images/icons/icon-32x32.png">
+
+    <link rel="manifest" href="/manifest.json">
+    <!-- Add to home screen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="JusMobile">
+    <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
+    <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
+    <meta name="msapplication-TileColor" content="#2F3BA2">
+
+    <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+
+  </head>
+
+  <body>
+    <header class="header">
+      <i class="fas fa-bars" onclick="openLeftMenu()"></i>
+    </header>
+
+
+    <main class="main" style="margin-top: 60px" >
+
+      <div id="videos" class="container">
+        <div class="row"></div>
+      </div>
+
+      <!-- CREATE VIDEO CONTAINER -->
+      <div id="create-video-container"class="dialog-container">
+        <div class="dialog">
+          <div class="dialog-title">Adicionar Video</div>
+          <div class="input-content">
+            <div class="wrap-input100 validate-input m-t-70 m-b-35" data-validate = "Enter username">
+              <input id="urlVideo" class="input100" type="text" name="link">
+              <span class="focus-input100" data-placeholder="Link Video"></span>
+            </div>
+
+            <input id="img" name="myFile" type="file">
+
+            <div class="wrap-input100 validate-input m-t-70 m-b-35" data-validate = "Enter username">
+              <input id="authorVideo" class="input100" type="text" name="author">
+              <span class="focus-input100" data-placeholder="Autor"></span>
+            </div>
+
+            <div class="wrap-input100 validate-input m-t-70 m-b-35" data-validate = "Enter descripion">
+              <input id="descriptionVideo" class="input100" type="text" name="description">
+              <span class="focus-input100" data-placeholder="Descrição Video"></span>
+            </div>
+          </div>
+
+          <div class="dialog-buttons">
+            <button id="butAddVideo" class="button">Adicionar</button>
+            <button id="butAddCancel" class="button">Cancelar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- WATCH VIDEO CONTAINER -->
+      <div id="watch-video-container"class="dialog-container">
+        <div class="dialog">
+          <div class="dialog-buttons">
+            <button id="butCloseVideo" class="button">Cancel</button>
+          </div>
+
+          <div class="dialog-title">Nome do Video</div>
+
+          <video controls preload="auto" width="600" height="100%" >
+            <!-- poster="test.jpg" -->
+            <!-- <source src=http://techslides.com/demos/sample-videos/small.webm type=video/webm>
+            <source src=http://techslides.com/demos/sample-videos/small.ogv type=video/ogg> -->
+            <source src=http://metodo300.com/android/video.mp4 type=video/mp4>
+            <!-- <source src=http://techslides.com/demos/sample-videos/small.3gp type=video/3gp> -->
+          </video>
+        </div>
+      </div>
+
+      <script src="http://vjs.zencdn.net/6.6.3/video.js"></script>
+
+    </main>
+
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="leftMenu">
+      <button onclick="closeLeftMenu()" class="w3-bar-item w3-button w3-large">Close &times;</button>
+      <a onclick="logOutUser()"  class="w3-bar-item w3-button">Log Out</a>
+      <a onclick="getData()"  class="w3-bar-item w3-button">Get data</a>
+      <a onclick="toggleAddDialogCreateVideo(true)"  class="w3-bar-item w3-button">Criar Video</a>
+
+    </div>
+
+    <!--===============================================================================================-->
+    	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/bootstrap/js/popper.js"></script>
+    	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/daterangepicker/moment.min.js"></script>
+    	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    <script src="js/main.js"></script>
+    <script src="js/moment-with-locales.min.js"></script>
+    <script src="js/firebase.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+      });
+
+      firebase.initializeApp(config);
+
+      document.addEventListener('DOMContentLoaded', function() {
+      });
+
+      firebase.auth().onAuthStateChanged(user => {
+        if(user) {
+        }else{
+          goToSignIn()
+        }
+      });
+
+      function openLeftMenu() {
+        document.getElementById("leftMenu").style.display = "block";
+      }
+      function closeLeftMenu() {
+        document.getElementById("leftMenu").style.display = "none";
+      }
+
+      function logOutUser() {
+        console.log('Service Worker Registered')
+        firebase.auth().signOut();
+      }
+
+      function uploadFile() {
+        const ref = firebase.storage().ref();
+        const file = $('#img').get(0).files[0];
+        const name = (+new Date()) + '-' + file.name;
+        const metadata = { contentType: file.type };
+        const task = ref.child(name).put(file, metadata);
+        task.then((snapshot) => {
+            console.log(snapshot.downloadURL);
+            var videoUrl = document.getElementById('urlVideo').value;
+            var videoThumbnailUrl = snapshot.downloadURL;
+            var videoAuthor = document.getElementById('authorVideo').value;
+            var videoDescriptioin = document.getElementById('descriptionVideo').value;
+            var videoDate =  moment().format('DD/MM/YYYY');
+
+            writeVideoData(videoUrl, videoThumbnailUrl, videoAuthor, videoDescriptioin, videoDate)
+
+        });
+      }
+
+      function writeVideoData( videoUrl, videoThumbnailUrl, videoAuthor, videoDescription, videoDate) {
+        var video = {
+          url: videoUrl,
+          thumbnail : videoThumbnailUrl,
+          author: videoAuthor,
+          description: videoDescription,
+          datePublish: videoDate
+        }
+
+        var newPostKey = firebase.database().ref().child('videos').push().key;
+        firebase.database().ref('videos/' + newPostKey).set(video);
+      }
+
+
+      function getData(){
+
+        // document.write('<div class="row">
+        //   <div class="col-md-4">
+        //     <div class="card">
+        //       <img src="images/img_avatar.png" alt="Avatar" style="width:100%">
+        //       <div class="container">
+        //         <h4 class="video-author-name"><b>John Doe</b></h4>
+        //         <p>
+        //         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        //         Phasellus dolor tellus, posuere vel ornare eu, commodo vel nunc.
+        //         Duis convallis finibus nunc.</p>
+        //         <p class="video-date-published">publicado 09/02/2018</p>
+        //       </div>
+        //     </div>
+        //   </div>'
+        //
+        // );
+
+        // var row = '<div class="row"></div>'
+
+        var card = '<div class="col-md-4"><div class="card"><img src="images/img_avatar.png" alt="Avatar" style="width:100%">'
+        var cardContainer = '<div class="container"> <h4 class="video-author-name"> <b></b> </h4> <p></p> <p class="video-date-published"></p> </div>'
+        var endDiv = '</div> </div>'
+        html = card + cardContainer + endDiv
+
+        // document.write('<html><body><h2>HTML</h2></body></html>');
+
+        firebase.database().ref("/videos").on("value", function(snapshot) {
+
+            snapshot.forEach(function(childSnapshot) {
+              // key
+              var key = childSnapshot.key;
+              // value, could be object
+              var childData = childSnapshot.val();
+              // Do what you want with these key/values here
+
+              var card = '<div class="col-md-4"><div class="card"><img src="' + childData.thumbnail + '" alt="Avatar" style="width:100%">'
+              var cardContainer = '<div class="container"> <h4 class="video-author-name"> <b>'+ childData.author + '</b> </h4> <p>' + childData.description +'</p> <p class="video-date-published">' + childData.datePublish + '</p> </div>'
+              var endDiv = '</div> </div>'
+              html = card + cardContainer + endDiv
+
+              $(".row").append(html);
+
+              console.log();
+            });
+        });
+      }
+
+      document.getElementById('butAddVideo').addEventListener('click', function() {
+        uploadFile()
+        // Close the add new city dialog
+        toggleAddDialogCreateVideo(false);
+      });
+      document.getElementById('butAddCancel').addEventListener('click', function() {
+        // Close the add new city dialog
+        toggleAddDialogCreateVideo(false);
+      });
+
+      document.getElementById('butCloseVideo').addEventListener('click', function() {
+        // Close the add new city dialog
+        toggleAddDialogWatchVideo(false);
+      });
+
+      window.onload = function(){
+        getData()
+      };
+
+    </script>
+  </body>
+</html>
