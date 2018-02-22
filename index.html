@@ -114,6 +114,7 @@
       <a onclick="logOutUser()"  class="w3-bar-item w3-button">Log Out</a>
       <a onclick="getData()"  class="w3-bar-item w3-button">Get data</a>
       <a onclick="toggleAddDialogCreateVideo(true)"  class="w3-bar-item w3-button">Criar Video</a>
+      <a onclick="goToAdmin()"  class="w3-bar-item w3-button">Administração</a>
 
     </div>
 
@@ -226,6 +227,7 @@
         // document.write('<html><body><h2>HTML</h2></body></html>');
 
         firebase.database().ref("/videos").on("value", function(snapshot) {
+            // location.reload();
 
             snapshot.forEach(function(childSnapshot) {
               // key

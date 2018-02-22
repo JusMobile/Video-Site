@@ -431,6 +431,23 @@ border: none !important;
 }
 
 
+.container-admin {
+width: 100%;
+min-height: 100vh;
+display: -webkit-box;
+display: -webkit-flex;
+display: -moz-box;
+display: -ms-flexbox;
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+margin-top: 10%;
+padding: 15px;
+background: #fff;
+}
+
+
+
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {

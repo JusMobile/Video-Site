@@ -87,6 +87,10 @@ function goToMain(){
   window.location.href='/index.html'
 }
 
+function goToAdmin(){
+  window.location.href='/admin.html'
+}
+
 function initApp() {
       // Listening for auth state changes.
 

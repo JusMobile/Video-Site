@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>JusMobile</title>
+
+    <link rel="icon" href="images/icons/icon-32x32.png">
+
+    <link rel="manifest" href="/manifest.json">
+    <!-- Add to home screen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="JusMobile">
+    <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
+    <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
+    <meta name="msapplication-TileColor" content="#2F3BA2">
+
+
+    <script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
+
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+
+  </head>
+
+  <body>
+
+    <header class="header">
+    </header>
+
+    <main class="main" >
+      <div class="limiter">
+    		<div class="container-admin">
+    			<div class="wrap-login100  ">
+    				<div class="login100-form validate-form">
+    					<span class="login100-form-title">
+    						Admin
+    					</span>
+
+    					 <div class="wrap-input100 validate-input m-t-35 m-b-35"  data-validate = "Entre com o numero de Cupons">
+    						<input id="couponNumber" class="input100" type="number" name="coupon-number">
+    						<span class="focus-input100" data-placeholder="Numero de Cupons"></span>
+    					</div>
+              <button id="buttonCoupon"type="button">Gerar</button>
+
+    			  </div>
+    		 </div>
+    	 </div>
+
+    </main>
+
+    <!--===============================================================================================-->
+    	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/bootstrap/js/popper.js"></script>
+    	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/select2/select2.min.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/daterangepicker/moment.min.js"></script>
+    	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    	<script src="vendor/countdowntime/countdowntime.js"></script>
+    <!--===============================================================================================-->
+    	<script src="js/main.js"></script>
+      <script src="js/firebase.js"></script>
+
+    <script>
+
+      firebase.initializeApp(config);
+
+      document.addEventListener('DOMContentLoaded', function() {
+      });
+
+      document.getElementById('buttonCoupon').addEventListener('click', function() {
+        var numberCoupons = document.getElementById('couponNumber').value
+        createCoupon(numberCoupons)
+      });
+
+      function createCoupon(numberCoupons) {
+        var coupon = {
+          used: false
+        }
+
+        for (i = 0; i < numberCoupons; i++) {
+          var newPostKey = firebase.database().ref().child('coupons').push().key;
+          firebase.database().ref('coupons/' + newPostKey).set(coupon)
+          .then(function onSuccess(res) {
+            //alert("Cupons gerado com sucesso!");
+            console.log('Cupom ' + i + ' gerado"');
+            // goToMain()
+          }).catch(function onError(err) {
+            console.error(err);
+          });
+        }
+        alert('Cupons gerados com sucesso');
+      }
+
+    </script>
+  </body>
+</html>
