@@ -85,11 +85,14 @@ header{
     background: url(/images/ic_add_white_24px.svg) center center no-repeat; }
 }
 
-
+main.main {
+  background: #fff;
+}
 
 
 .main {
-  padding-top: 60px;
+  background: #fff;
+  /* padding-top: 60px; */
   -webkit-box-flex: 1;
   -webkit-flex: 1;
       -ms-flex: 1;
@@ -197,14 +200,9 @@ input-content {
   margin-right: 15px;
 }
 
-
-
-
-
-
-
-
-
+iframe, object, embed {
+    max-width: 100%;
+}
 
 
 
@@ -430,7 +428,6 @@ iframe {
 border: none !important;
 }
 
-
 .container-admin {
 width: 100%;
 min-height: 100vh;
@@ -445,7 +442,6 @@ margin-top: 10%;
 padding: 15px;
 background: #fff;
 }
-
 
 
 /*//////////////////////////////////////////////////////////////////

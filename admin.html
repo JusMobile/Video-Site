@@ -48,26 +48,61 @@
   <body>
 
     <header class="header">
+      <i class="fas fa-arrow-left" onclick="goToMain()"></i>
     </header>
 
     <main class="main" >
       <div class="limiter">
     		<div class="container-admin">
-    			<div class="wrap-login100  ">
-    				<div class="login100-form validate-form">
+    			<div class="wrap-login100 m-t-10">
+    				<div class="login100-form validate-form" >
     					<span class="login100-form-title">
     						Admin
     					</span>
+              <div style="display: inline-flex">
+                <div class="wrap-input100 validate-input m-t-35 m-b-35"  data-validate = "Entre com o numero de Cupons">
+      					  <input id="couponNumber" class="input100" type="number" name="coupon-number">
+      			      <span class="focus-input100" data-placeholder="Numero de Cupons"></span>
+      					</div>
+                <button id="buttonCreateCoupon" class="m-l-20" type="button">Gerar</button>
+              </div>
 
-    					 <div class="wrap-input100 validate-input m-t-35 m-b-35"  data-validate = "Entre com o numero de Cupons">
-    						<input id="couponNumber" class="input100" type="number" name="coupon-number">
-    						<span class="focus-input100" data-placeholder="Numero de Cupons"></span>
-    					</div>
-              <button id="buttonCoupon"type="button">Gerar</button>
+
+              <button id="buttonDialogCreateVideo" class="m-t-15" type="button">Criar Video</button>
 
     			  </div>
     		 </div>
     	 </div>
+
+       <!-- CREATE VIDEO CONTAINER -->
+       <div id="create-video-container"class="dialog-container">
+         <div class="dialog">
+           <div class="dialog-title">Adicionar Video</div>
+           <div class="input-content">
+             <div class="wrap-input100 validate-input m-t-70 m-b-35" data-validate = "Enter username">
+               <input id="urlVideo" class="input100" type="text" name="link">
+               <span class="focus-input100" data-placeholder="Codigo Video"></span>
+             </div>
+
+             <input id="img" name="myFile" type="file">
+
+             <div class="wrap-input100 validate-input m-t-70 m-b-35" data-validate = "Enter username">
+               <input id="authorVideo" class="input100" type="text" name="author">
+               <span class="focus-input100" data-placeholder="Autor"></span>
+             </div>
+
+             <div class="wrap-input100 validate-input m-t-70 m-b-35" data-validate = "Enter descripion">
+               <input id="descriptionVideo" class="input100" type="text" name="description">
+               <span class="focus-input100" data-placeholder="Descrição Video"></span>
+             </div>
+           </div>
+
+           <div class="dialog-buttons">
+             <button id="butAddVideo" class="button m-r-20">Adicionar</button>
+             <button id="butAddCancel" class="button">Cancelar</button>
+           </div>
+         </div>
+       </div>
 
     </main>
 
@@ -93,13 +128,55 @@
 
       firebase.initializeApp(config);
 
-      document.addEventListener('DOMContentLoaded', function() {
-      });
-
-      document.getElementById('buttonCoupon').addEventListener('click', function() {
+      document.getElementById('buttonCreateCoupon').addEventListener('click', function() {
         var numberCoupons = document.getElementById('couponNumber').value
         createCoupon(numberCoupons)
       });
+
+      document.getElementById('buttonDialogCreateVideo').addEventListener('click', function() {
+        toggleAddDialogCreateVideo(true);
+      });
+
+      document.getElementById('butAddVideo').addEventListener('click', function() {
+        uploadFile()
+      });
+
+      document.getElementById('butAddCancel').addEventListener('click', function() {
+        toggleAddDialogCreateVideo(false);
+      });
+
+      function uploadFile() {
+        const ref = firebase.storage().ref();
+        const file = $('#img').get(0).files[0];
+        const name = (+new Date()) + '-' + file.name;
+        const metadata = { contentType: file.type };
+        const task = ref.child(name).put(file, metadata);
+        task.then((snapshot) => {
+            console.log(snapshot.downloadURL);
+            var videoUrl = document.getElementById('urlVideo').value;
+            var videoThumbnailUrl = snapshot.downloadURL;
+            var videoAuthor = document.getElementById('authorVideo').value;
+            var videoDescriptioin = document.getElementById('descriptionVideo').value;
+            var videoDate =  moment().format('DD/MM/YYYY');
+
+            writeVideoData(videoUrl, videoThumbnailUrl, videoAuthor, videoDescriptioin, videoDate)
+
+        });
+      }
+
+      function writeVideoData( videoUrl, videoThumbnailUrl, videoAuthor, videoDescription, videoDate) {
+        var video = {
+          url: videoUrl,
+          thumbnail : videoThumbnailUrl,
+          author: videoAuthor,
+          description: videoDescription,
+          datePublish: videoDate
+        }
+
+        var newPostKey = firebase.database().ref().child('videos').push().key;
+        firebase.database().ref('videos/' + newPostKey).set(video);
+        toggleAddDialogCreateVideo(false);
+      }
 
       function createCoupon(numberCoupons) {
         var coupon = {

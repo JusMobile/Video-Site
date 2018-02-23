@@ -122,14 +122,16 @@ function toggleAddDialogCreateVideo(visible) {
       } else {
         createVideoContainer.classList.remove("dialog-container--visible");
       }
-      closeLeftMenu()
+      
 };
 
-function toggleAddDialogWatchVideo(visible) {
+function toggleAddDialogWatchVideo(visible, videoUrl) {
       var watchVideoContainer = document.getElementById("watch-video-container");
       //watchVideoContainer.classList.add("dialog-container--visible");
       if (visible) {
         watchVideoContainer.classList.add("dialog-container--visible");
+        console.log(videoUrl);
+        document.getElementById("videoSrc").src = 'https://player.vimeo.com/video/' + videoUrl;
       } else {
         watchVideoContainer.classList.remove("dialog-container--visible");
       }
