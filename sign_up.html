@@ -134,16 +134,7 @@
       }
 
       function signUpUser(coupon){
-        var email = document.getElementById('email').value;
-        var password = document.getElementById('password').value;
-        if (email.length < 4) {
-          alert('Please enter an email address.');
-          return;
-        }
-        if (password.length < 4) {
-          alert('Please enter a password.');
-          return;
-        }
+
 
         firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function(user){
@@ -182,11 +173,20 @@
       function verifyCoupon(){
         var coupon = document.getElementById('coupon').value;
         var email = document.getElementById('email').value;
-        // if(firebase.database().ref('coupons/' + coupon).value){
-        //   alert('Cupom disponivel')
-        // }else{
-        //   alert('Cupom ja usado!')
-        // }
+        var password = document.getElementById('password').value;
+
+        if (email.length < 4) {
+          alert('Please enter an email address.');
+          return;
+        }
+        if (password.length < 4) {
+          alert('Please enter a password.');
+          return;
+        }
+        if (coupon.length < 4) {
+          alert('Please enter an coupon.');
+          return;
+        }
 
         firebase.database().ref('coupons/' + coupon).once('value')
         .then(function(snapshot) {
