@@ -113,7 +113,6 @@ function initApp() {
       });
 }
 
-
 function toggleAddDialogCreateVideo(visible) {
       var createVideoContainer = document.getElementById("create-video-container");
       //createVideoContainer.classList.add("dialog-container--visible");
@@ -122,7 +121,7 @@ function toggleAddDialogCreateVideo(visible) {
       } else {
         createVideoContainer.classList.remove("dialog-container--visible");
       }
-      
+
 };
 
 function toggleAddDialogWatchVideo(visible, videoUrl) {

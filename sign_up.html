@@ -133,7 +133,7 @@
           verifyCoupon()
       }
 
-      function signUpUser(){
+      function signUpUser(coupon){
         var email = document.getElementById('email').value;
         var password = document.getElementById('password').value;
         if (email.length < 4) {
@@ -154,11 +154,16 @@
 
             firebase.database().ref('users/' + user.uid).set(userModel)
             .then(function onSuccess(res) {
-              goToMain()
+
+              firebase.database().ref('coupons/' + coupon).set({ used: true, emailUser: email })
+              .then(function onSuccess(res) {
+                goToMain()
+              })
+
+
             }).catch(function onError(err) {
               console.error(err);
             });
-
 
         }).catch(function(error) {
             // Handle Errors here.
@@ -189,10 +194,8 @@
             alert('Cupom ja usado!')
           }else{
 
-            firebase.database().ref('coupons/' + coupon).set({ used: true, emailUser: email })
-            .then(function onSuccess(res) {
-              signUpUser()
-            })
+            signUpUser(coupon)
+
           }
           console.log(snapshot.val().used);
         }, function(error) {
