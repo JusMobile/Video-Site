@@ -1,4 +1,5 @@
 
+
 (function ($) {
     "use strict";
 
@@ -70,6 +71,8 @@
 })(jQuery);
 
 
+
+
 //AUTHENTICATION
 function goToSignIn(){
   window.location.href='/sign_in.html'
@@ -135,6 +138,89 @@ function toggleAddDialogWatchVideo(visible, videoUrl) {
         watchVideoContainer.classList.remove("dialog-container--visible");
       }
 };
+
+
+
+
+//----------------SIGNUP---------------------- //
+
+document.getElementById('buttonRegister').addEventListener('click', function() {
+  handleSignUp()
+});
+
+
+function handleSignUp() {
+  var coupon = document.getElementById('coupon').value;
+  var email = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
+
+  if (email.length < 4) {
+    alert('Please enter an email address.');
+    return;
+  }
+  if (password.length < 4) {
+    alert('Please enter a password.');
+    return;
+  }
+  if (coupon.length < 4) {
+    alert('Please enter an coupon.');
+    return;
+  }
+
+  firebase.database().ref('coupons/' + coupon).once('value')
+  .then(function(snapshot) {
+    if(snapshot.val().used){
+      alert('Cupom ja usado!')
+    }else{
+
+      signUpUser(coupon, email, password)
+
+    }
+    console.log(snapshot.val().used);
+  }, function(error) {
+    // The Promise was rejected.
+    console.error(error);
+  });
+}
+
+function signUpUser(coupon, email, password){
+
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+  .then(function(user){
+      console.log('uid',user.uid)
+      var userModel = {
+            admin: false
+      }
+
+      firebase.database().ref('users/' + user.uid).set(userModel)
+      .then(function onSuccess(res) {
+
+        firebase.database().ref('coupons/' + coupon).set({ used: true, emailUser: email })
+        .then(function onSuccess(res) {
+          goToMain()
+        })
+
+
+      }).catch(function onError(err) {
+        console.error(err);
+      });
+
+  }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+
+      if (errorCode == 'auth/weak-password') {
+        alert('The password is too weak.');
+      } else {
+        alert(errorMessage);
+      }
+      console.log(error);
+  });
+}
+
+
+
 
 // // TODO add service worker code here
 // if ('serviceWorker' in navigator) {
