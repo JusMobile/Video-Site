@@ -96,7 +96,6 @@ function goToAdmin(){
 
 function initApp() {
       // Listening for auth state changes.
-
       firebase.auth().onAuthStateChanged(function(user) {
 
         if (user) {

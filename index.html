@@ -56,7 +56,6 @@
         <div class="row"></div>
       </div>
 
-
       <!-- WATCH VIDEO CONTAINER -->
       <div id="watch-video-container"class="dialog-container">
         <div class="dialog">
@@ -79,7 +78,7 @@
     <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="leftMenu">
       <button onclick="closeLeftMenu()" class="w3-bar-item w3-button w3-large">Close &times;</button>
       <a onclick="logOutUser()"  class="w3-bar-item w3-button">Log Out</a>
-      <a onclick="goToAdmin()"  class="w3-bar-item w3-button">Administração</a>
+      <!-- <a onclick="goToAdmin()"  class="w3-bar-item w3-button">Administração</a> -->
 
     </div>
 
@@ -111,10 +110,28 @@
 
       firebase.auth().onAuthStateChanged(user => {
         if(user) {
+          showAdminPart(user)
+
         }else{
           goToSignIn()
         }
       });
+
+      function showAdminPart(user) {
+        firebase.database().ref('users/' + user.uid ).once('value')
+        .then(function(snapshot) {
+          if(snapshot.val().admin){
+            var buttonAdmin = '<a onclick="goToAdmin()"  class="w3-bar-item w3-button">Administração</a>'
+            $("#leftMenu").append(buttonAdmin);
+          }else{
+
+          }
+          //console.log(snapshot.val().admin);
+        }, function(error) {
+          // The Promise was rejected.
+          console.error(error);
+        });
+      }
 
       function openLeftMenu() {
         document.getElementById("leftMenu").style.display = "block";
@@ -132,7 +149,7 @@
 
         firebase.database().ref("/videos").on("value", function(snapshot) {
             // location.reload();
-            console.log("changed");
+            // console.log("changed");
             $( ".col-md-4" ).remove();
             snapshot.forEach(function(childSnapshot) {
               // key
@@ -151,6 +168,8 @@
             });
         });
       }
+
+
 
       document.getElementById('butCloseVideo').addEventListener('click', function() {
         // Close the add new city dialog
