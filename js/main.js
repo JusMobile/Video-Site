@@ -94,6 +94,10 @@ function goToAdmin(){
   window.location.href='/admin.html'
 }
 
+function goProfile() {
+  window.location.href='/profile.html'
+}
+
 function initApp() {
       // Listening for auth state changes.
       firebase.auth().onAuthStateChanged(function(user) {

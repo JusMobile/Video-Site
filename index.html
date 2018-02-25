@@ -76,10 +76,10 @@
     </main>
 
     <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="leftMenu">
-      <button onclick="closeLeftMenu()" class="w3-bar-item w3-button w3-large">Close &times;</button>
-      <a onclick="logOutUser()"  class="w3-bar-item w3-button">Log Out</a>
-      <!-- <a onclick="goToAdmin()"  class="w3-bar-item w3-button">Administração</a> -->
-
+      <button onclick="closeLeftMenu()" class="w3-bar-item w3-button w3-large">Fechar &times;</button>
+      <!-- <a onclick="goProfile()"  class="w3-bar-item w3-button">Editar Perfil</a> -->
+      <a onclick="changePassword()"  class="w3-bar-item w3-button">Trocar Senha</a>
+      <a onclick="logOutUser()"  class="w3-bar-item w3-button">Sair</a>
     </div>
 
     <!--===============================================================================================-->
@@ -141,8 +141,31 @@
       }
 
       function logOutUser() {
-        console.log('Service Worker Registered')
         firebase.auth().signOut();
+      }
+
+      function changePassword() {
+        var currentUser = firebase.auth().currentUser;
+
+        firebase.auth().sendPasswordResetEmail(currentUser.email)
+        .then(function() {
+
+          alert('Um email para troca de senha foi enviado!');
+          // /goToSignIn()
+
+        }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+
+          if (errorCode == 'auth/invalid-email') {
+            alert(errorMessage);
+          } else if (errorCode == 'auth/user-not-found') {
+            alert(errorMessage);
+          }
+          console.log(error);
+
+        });
       }
 
       function getData(){
