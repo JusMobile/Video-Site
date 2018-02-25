@@ -119,6 +119,9 @@ function initApp() {
       });
 }
 
+
+//----------------INDEX---------------------- //
+
 function toggleAddDialogCreateVideo(visible) {
       var createVideoContainer = document.getElementById("create-video-container");
       //createVideoContainer.classList.add("dialog-container--visible");
@@ -141,6 +144,83 @@ function toggleAddDialogWatchVideo(visible, videoUrl) {
         watchVideoContainer.classList.remove("dialog-container--visible");
       }
 };
+
+
+
+function showAdminPart(user) {
+  firebase.database().ref('users/' + user.uid ).once('value')
+  .then(function(snapshot) {
+    if(snapshot.val().admin){
+      var buttonAdmin = '<a onclick="goToAdmin()"  class="w3-bar-item w3-button">Administração</a>'
+      $("#leftMenu").append(buttonAdmin);
+    }else{
+
+    }
+    //console.log(snapshot.val().admin);
+  }, function(error) {
+    // The Promise was rejected.
+    console.error(error);
+  });
+}
+
+function openLeftMenu() {
+  document.getElementById("leftMenu").style.display = "block";
+}
+function closeLeftMenu() {
+  document.getElementById("leftMenu").style.display = "none";
+}
+
+function logOutUser() {
+  firebase.auth().signOut();
+}
+
+function changePassword() {
+  var currentUser = firebase.auth().currentUser;
+
+  firebase.auth().sendPasswordResetEmail(currentUser.email)
+  .then(function() {
+
+    alert('Um email para troca de senha foi enviado!');
+    // /goToSignIn()
+
+  }).catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+
+    if (errorCode == 'auth/invalid-email') {
+      alert(errorMessage);
+    } else if (errorCode == 'auth/user-not-found') {
+      alert(errorMessage);
+    }
+    console.log(error);
+
+  });
+}
+
+function getData(){
+
+  firebase.database().ref("/videos").on("value", function(snapshot) {
+      // location.reload();
+      // console.log("changed");
+      $( ".col-md-4" ).remove();
+      snapshot.forEach(function(childSnapshot) {
+        // key
+        var key = childSnapshot.key;
+        // value, could be object
+        var childData = childSnapshot.val();
+        // Do what you want with these key/values here
+
+        var card = '<div class="col-md-4"><div class="card" onclick="toggleAddDialogWatchVideo(true, ' + childData.url + ')"><img src="' + childData.thumbnail + '" alt="Avatar" style="width:100%; height: 200px;">'
+        var cardContainer = '<div class="container"> <h4 class="video-author-name"> <b>'+ childData.author + '</b> </h4> <p>' + childData.description +'</p> <p class="video-date-published">' + childData.datePublish + '</p> </div>'
+        var endDiv = '</div> </div>'
+        html = card + cardContainer + endDiv
+
+        $(".row").append(html);
+
+      });
+  });
+}
 
 
 
