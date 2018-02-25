@@ -128,6 +128,14 @@
 
       firebase.initializeApp(config);
 
+      firebase.auth().onAuthStateChanged(user => {
+        if(user) {
+          isAdmin(user)
+        }else{
+          goToSignIn()
+        }
+      });
+
       document.getElementById('buttonCreateCoupon').addEventListener('click', function() {
         var numberCoupons = document.getElementById('couponNumber').value
         createCoupon(numberCoupons)
@@ -144,6 +152,22 @@
       document.getElementById('butAddCancel').addEventListener('click', function() {
         toggleAddDialogCreateVideo(false);
       });
+
+      function isAdmin(user) {
+        firebase.database().ref('users/' + user.uid ).once('value')
+        .then(function(snapshot) {
+          console.log(snapshot.val().admin);
+          if(snapshot.val().admin){
+
+          }else{
+            goToMain()
+          }
+
+        }, function(error) {
+          // The Promise was rejected.
+          console.error(error);
+        });
+      }
 
       function uploadFile() {
         const ref = firebase.storage().ref();
