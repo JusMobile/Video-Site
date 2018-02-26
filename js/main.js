@@ -138,7 +138,7 @@ function toggleAddDialogWatchVideo(visible, videoUrl) {
       //watchVideoContainer.classList.add("dialog-container--visible");
       if (visible) {
         watchVideoContainer.classList.add("dialog-container--visible");
-        
+
         document.getElementById("videoSrc").src = 'https://player.vimeo.com/video/' + videoUrl;
       } else {
         watchVideoContainer.classList.remove("dialog-container--visible");
@@ -212,7 +212,7 @@ function getData(){
         // Do what you want with these key/values here
 
         var card = '<div class="col-md-4"><div class="card" onclick="toggleAddDialogWatchVideo(true, ' + childData.url + ')"><img src="' + childData.thumbnail + '" alt="Avatar" style="width:100%; height: 200px;">'
-        var cardContainer = '<div class="container"> <h4 class="video-author-name"> <b>'+ childData.author + '</b> </h4> <p>' + childData.description +'</p> <p class="video-date-published">' + childData.datePublish + '</p> </div>'
+        var cardContainer = '<div class="container"> <h4 class="video-author-name"> <b>'+ childData.author + '</b> </h4> <p class="card-description">' + childData.description +'</p> <p class="video-date-published">' + childData.datePublish + '</p> </div>'
         var endDiv = '</div> </div>'
         html = card + cardContainer + endDiv
 
