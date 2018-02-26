@@ -187,7 +187,7 @@
           alert('Por favor colocar uma descrição para o video.');
           return;
         }
-        
+
         const ref = firebase.storage().ref();
         const file = $('#img').get(0).files[0];
         const name = (+new Date()) + '-' + file.name;

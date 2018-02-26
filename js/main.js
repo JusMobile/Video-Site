@@ -138,7 +138,7 @@ function toggleAddDialogWatchVideo(visible, videoUrl) {
       //watchVideoContainer.classList.add("dialog-container--visible");
       if (visible) {
         watchVideoContainer.classList.add("dialog-container--visible");
-        console.log(videoUrl);
+        
         document.getElementById("videoSrc").src = 'https://player.vimeo.com/video/' + videoUrl;
       } else {
         watchVideoContainer.classList.remove("dialog-container--visible");
