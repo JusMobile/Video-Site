@@ -170,6 +170,24 @@
       }
 
       function uploadFile() {
+
+        var videoId = document.getElementById('urlVideo').value;
+        var videoAuthor = document.getElementById('authorVideo').value;
+        var videoDescriptioin = document.getElementById('descriptionVideo').value;
+
+        if (videoId.length < 1) {
+          alert('Por favor colocar o id do video.');
+          return;
+        }
+        if (videoAuthor.length < 1) {
+          alert('Por favor colocar o Autor do video.');
+          return;
+        }
+        if (videoDescriptioin.length < 1) {
+          alert('Por favor colocar uma descrição para o video.');
+          return;
+        }
+        
         const ref = firebase.storage().ref();
         const file = $('#img').get(0).files[0];
         const name = (+new Date()) + '-' + file.name;
@@ -177,13 +195,11 @@
         const task = ref.child(name).put(file, metadata);
         task.then((snapshot) => {
             console.log(snapshot.downloadURL);
-            var videoUrl = document.getElementById('urlVideo').value;
+
             var videoThumbnailUrl = snapshot.downloadURL;
-            var videoAuthor = document.getElementById('authorVideo').value;
-            var videoDescriptioin = document.getElementById('descriptionVideo').value;
             var videoDate =  moment().format('DD/MM/YYYY');
 
-            writeVideoData(videoUrl, videoThumbnailUrl, videoAuthor, videoDescriptioin, videoDate)
+            writeVideoData(videoId, videoThumbnailUrl, videoAuthor, videoDescriptioin, videoDate)
 
         });
       }
