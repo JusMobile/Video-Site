@@ -79,7 +79,7 @@
          <div class="dialog">
            <div class="dialog-title">Adicionar Video</div>
            <div class="input-content">
-             <div class="wrap-input100 validate-input m-t-70 m-b-35" data-validate = "Enter username">
+             <div class="wrap-input100 validate-input m-t-35 m-b-35" data-validate = "Enter username">
                <input id="urlVideo" class="input100" type="text" name="link">
                <span class="focus-input100" data-placeholder="Codigo Video"></span>
              </div>
@@ -138,6 +138,10 @@
 
       document.getElementById('buttonCreateCoupon').addEventListener('click', function() {
         var numberCoupons = document.getElementById('couponNumber').value
+        if(numberCoupons.length < 1 || numberCoupons < 1){
+          alert("Por favor inserir o numero de cupons valido!")
+          return
+        }
         createCoupon(numberCoupons)
       });
 
