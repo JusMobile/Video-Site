@@ -146,6 +146,7 @@ main.main {
 
 
 .dialog-container {
+  overflow: auto;
   background: rgba(0, 0, 0, 0.57);
   position: fixed;
   left: 0;
@@ -244,12 +245,18 @@ iframe, object, embed {
   .w3-sidebar{
     width:35%;
   }
+  .dialog{
+    width: 50%;
+  }
 }
 
 @media (min-width:850px){
 
   .w3-sidebar{
     width:25%;
+  }
+  .dialog{
+    width: 40%;
   }
 }
 
