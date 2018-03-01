@@ -145,6 +145,15 @@ function toggleAddDialogWatchVideo(visible, videoUrl) {
       }
 };
 
+function showSpinner() {
+  var spinner = document.querySelector('.loader');
+  spinner.removeAttribute('hidden', true);
+}
+
+function hideSpinner() {
+  var spinner = document.querySelector('.loader');
+  spinner.setAttribute('hidden', true);
+}
 
 
 function showAdminPart(user) {
@@ -200,7 +209,7 @@ function changePassword() {
 }
 
 function getData(){
-
+  showSpinner()
   firebase.database().ref("/videos").on("value", function(snapshot) {
       // location.reload();
       // console.log("changed");
@@ -221,6 +230,7 @@ function getData(){
 
       });
   });
+  hideSpinner()
 }
 
 
@@ -229,14 +239,21 @@ function getData(){
 
 function sendPasswordReset() {
   var email = document.getElementById('email').value.replace(/\s/g,'');
-  // [START sendpasswordemail]
+  if (email.length < 4) {
+    alert('Please enter an email address.');
+    return;
+  }
+
+  showSpinner()
+
   firebase.auth().sendPasswordResetEmail(email)
   .then(function() {
-
+    hideSpinner()
     alert('Password Reset Email Sent!');
     goToSignIn()
 
   }).catch(function(error) {
+    hideSpinner()
     // Handle Errors here.
     var errorCode = error.code;
     var errorMessage = error.message;
@@ -270,14 +287,16 @@ function handleSignIn() {
       alert('Please enter a password.');
       return;
     }
+    showSpinner()
 
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+      hideSpinner()
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
 
       if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
+        alert('Email ou senha estão incorretos.');
       } else {
         alert(errorMessage);
       }
@@ -312,10 +331,12 @@ function handleSignUp() {
     alert('Please enter an coupon.');
     return;
   }
+  showSpinner()
 
   firebase.database().ref('coupons/' + coupon).once('value')
   .then(function(snapshot) {
     if(snapshot.val().used){
+      hideSpinner()
       alert('Cupom ja usado!')
     }else{
 
@@ -327,6 +348,10 @@ function handleSignUp() {
     // The Promise was rejected.
     console.error(error);
   });
+
+  hideSpinner()
+  alert('Cupom não existe!')
+
 }
 
 function signUpUser(coupon, email, password){
@@ -344,14 +369,19 @@ function signUpUser(coupon, email, password){
         firebase.database().ref('coupons/' + coupon).set({ used: true, emailUser: email })
         .then(function onSuccess(res) {
           goToMain()
-        })
 
+        }).catch(function onError(err) {
+          hideSpinner()
+          console.error(err);
+        });
 
       }).catch(function onError(err) {
+        hideSpinner()
         console.error(err);
       });
 
   }).catch(function(error) {
+      hideSpinner()
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
