@@ -59,6 +59,7 @@
       <!-- WATCH VIDEO CONTAINER -->
       <div id="watch-video-container"class="dialog-container">
         <div class="dialog">
+
           <div class="dialog-buttons">
             <button id="butCloseVideo" class="button">Cancel</button>
           </div>
@@ -67,6 +68,8 @@
           <div class="embed-responsive embed-responsive-16by9 m-b-20">
             <iframe id="videoSrc" class="embed-responsive-item"   webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
           </div>
+
+          
 
         </div>
       </div>
@@ -110,7 +113,6 @@
       firebase.auth().onAuthStateChanged(user => {
         if(user) {
           showAdminPart(user)
-
         }else{
           goToSignIn()
         }

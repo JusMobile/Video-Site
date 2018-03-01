@@ -84,7 +84,15 @@
                <span class="focus-input100" data-placeholder="Codigo Video"></span>
              </div>
 
-             <input id="img" name="myFile" type="file">
+             <div class="m-b-20" style="display: inline-grid">
+               <span>Thumbnail</span>
+               <input id="thumbnail" name="Thumbnail" type="file">
+             </div>
+
+             <div style="display: inline-grid">
+               <span>Arquivo</span>
+               <input id="file" name="File" type="file">
+             </div>
 
              <div class="wrap-input100 validate-input m-t-35 m-b-35" data-validate = "Enter username">
                <input id="authorVideo" class="input100" type="text" name="author">
@@ -150,7 +158,7 @@
       });
 
       document.getElementById('butAddVideo').addEventListener('click', function() {
-        uploadFile()
+        addVideo()
       });
 
       document.getElementById('butAddCancel').addEventListener('click', function() {
@@ -160,7 +168,7 @@
       function isAdmin(user) {
         firebase.database().ref('users/' + user.uid ).once('value')
         .then(function(snapshot) {
-          console.log(snapshot.val().admin);
+          // console.log(snapshot.val().admin);
           if(snapshot.val().admin){
 
           }else{
@@ -173,11 +181,11 @@
         });
       }
 
-      function uploadFile() {
+      function addVideo() {
 
         var videoId = document.getElementById('urlVideo').value;
         var videoAuthor = document.getElementById('authorVideo').value;
-        var videoDescriptioin = document.getElementById('descriptionVideo').value;
+        var videoDescription = document.getElementById('descriptionVideo').value;
 
         if (videoId.length < 1) {
           alert('Por favor colocar o id do video.');
@@ -187,31 +195,46 @@
           alert('Por favor colocar o Autor do video.');
           return;
         }
-        if (videoDescriptioin.length < 1) {
+        if (videoDescription.length < 1) {
           alert('Por favor colocar uma descrição para o video.');
           return;
         }
+        uploadThumbnail(videoId, videoAuthor, videoDescription)
 
+      }
+
+      function uploadThumbnail(videoId, videoAuthor, videoDescription) {
         const ref = firebase.storage().ref();
-        const file = $('#img').get(0).files[0];
+        const file = $('#thumbnail').get(0).files[0];
         const name = (+new Date()) + '-' + file.name;
         const metadata = { contentType: file.type };
-        const task = ref.child(name).put(file, metadata);
+        const task = ref.child('thumbnails/' + name).put(file, metadata);
         task.then((snapshot) => {
             console.log(snapshot.downloadURL);
-
-            var videoThumbnailUrl = snapshot.downloadURL;
-            var videoDate =  moment().format('DD/MM/YYYY');
-
-            writeVideoData(videoId, videoThumbnailUrl, videoAuthor, videoDescriptioin, videoDate)
-
+            uploadFile(snapshot.downloadURL, videoId, videoAuthor, videoDescription)
         });
       }
 
-      function writeVideoData( videoUrl, videoThumbnailUrl, videoAuthor, videoDescription, videoDate) {
+      function uploadFile(videoThumbnailUrl, videoId, videoAuthor, videoDescription) {
+        const ref = firebase.storage().ref();
+        const file = $('#file').get(0).files[0];
+        const name = (+new Date()) + '-' + file.name;
+        const metadata = { contentType: file.type };
+        const task = ref.child('files/' + name).put(file, metadata);
+        task.then((snapshot) => {
+            console.log(snapshot.downloadURL);
+
+            var videoDate =  moment().format('DD/MM/YYYY');
+            writeVideoData(videoId, videoThumbnailUrl, snapshot.downloadURL, videoAuthor, videoDescription, videoDate)
+            // return snapshot.downloadURL;
+        });
+      }
+
+      function writeVideoData( videoUrl, videoThumbnailUrl, videoFileUrl, videoAuthor, videoDescription, videoDate) {
         var video = {
           url: videoUrl,
           thumbnail : videoThumbnailUrl,
+          file : videoFileUrl,
           author: videoAuthor,
           description: videoDescription,
           datePublish: videoDate

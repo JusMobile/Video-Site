@@ -151,7 +151,7 @@ function showAdminPart(user) {
   firebase.database().ref('users/' + user.uid ).once('value')
   .then(function(snapshot) {
     if(snapshot.val().admin){
-      var buttonAdmin = '<a onclick="goToAdmin()"  class="w3-bar-item w3-button">Administração</a>'
+      var buttonAdmin = '<a onclick="goToAdmin()" class="w3-bar-item w3-button">Administração</a>'
       $("#leftMenu").append(buttonAdmin);
     }else{
 
@@ -166,6 +166,7 @@ function showAdminPart(user) {
 function openLeftMenu() {
   document.getElementById("leftMenu").style.display = "block";
 }
+
 function closeLeftMenu() {
   document.getElementById("leftMenu").style.display = "none";
 }
@@ -211,8 +212,8 @@ function getData(){
         var childData = childSnapshot.val();
         // Do what you want with these key/values here
 
-        var card = '<div class="col-md-4"><div class="card" onclick="toggleAddDialogWatchVideo(true, ' + childData.url + ')"><img src="' + childData.thumbnail + '" alt="Avatar" style="width:100%; height: 200px;">'
-        var cardContainer = '<div class="container"> <h4 class="video-author-name"> <b>'+ childData.author + '</b> </h4> <p class="card-description">' + childData.description +'</p> <p class="video-date-published">' + childData.datePublish + '</p> </div>'
+        var card = '<div class="col-md-4"><div class="card"><img onclick="toggleAddDialogWatchVideo(true, ' + childData.url + ')" src="' + childData.thumbnail + '" alt="Avatar" style="width:100%; height: 200px;">'
+        var cardContainer = '<div class="container" onclick="toggleAddDialogWatchVideo(true, ' + childData.url + ')"> <h4 class="video-author-name"> <b>'+ childData.author + '</b> </h4> <p class="card-description">' + childData.description +'</p><p class="video-date-published">' + childData.datePublish + '</p> </div> <a class="m-l-20 m-b-10" href="' + childData.file + '"  download="">Download dos Documentos</a>'
         var endDiv = '</div> </div>'
         html = card + cardContainer + endDiv
 
