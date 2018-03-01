@@ -227,7 +227,7 @@ function getData(){
 //----------------RESET PASSWORD---------------------- //
 
 function sendPasswordReset() {
-  var email = document.getElementById('email').value;
+  var email = document.getElementById('email').value.replace(/\s/g,'');
   // [START sendpasswordemail]
   firebase.auth().sendPasswordResetEmail(email)
   .then(function() {
@@ -259,7 +259,7 @@ function handleSignIn() {
     firebase.auth().signOut();
     // [END signout]
   } else {
-    var email = document.getElementById('email').value;
+    var email = document.getElementById('email').value.replace(/\s/g,'');
     var password = document.getElementById('password').value;
     if (email.length < 4) {
       alert('Please enter an email address.');
@@ -296,7 +296,7 @@ function handleSignIn() {
 
 function handleSignUp() {
   var coupon = document.getElementById('coupon').value;
-  var email = document.getElementById('email').value;
+  var email = document.getElementById('email').value.replace(/\s/g,'');
   var password = document.getElementById('password').value;
 
   if (email.length < 4) {
