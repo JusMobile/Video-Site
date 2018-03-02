@@ -226,21 +226,28 @@
       }
 
       function uploadFile(videoThumbnailUrl, videoId, videoAuthor, videoDescription) {
+        var videoDate =  moment().format('DD/MM/YYYY');
         const ref = firebase.storage().ref();
         const file = $('#file').get(0).files[0];
-        const name = (+new Date()) + '-' + file.name;
-        const metadata = { contentType: file.type };
-        const task = ref.child('files/' + name).put(file, metadata);
-        task.then((snapshot) => {
-            console.log(snapshot.downloadURL);
 
-            var videoDate =  moment().format('DD/MM/YYYY');
-            writeVideoData(videoId, videoThumbnailUrl, snapshot.downloadURL, videoAuthor, videoDescription, videoDate)
-            // return snapshot.downloadURL;
-        }).catch(function(error) {
-          hideSpinner()
-          console.log(error);
-        });
+        if( document.getElementById("file").files.length == 0 ){
+          console.log("no files selected");
+          writeVideoData(videoId, videoThumbnailUrl, "", videoAuthor, videoDescription, videoDate)
+
+        }else{
+          const name = (+new Date()) + '-' + file.name;
+          const metadata = { contentType: file.type };
+          const task = ref.child('files/' + name).put(file, metadata);
+          task.then((snapshot) => {
+              console.log(snapshot.downloadURL);
+              writeVideoData(videoId, videoThumbnailUrl, snapshot.downloadURL, videoAuthor, videoDescription, videoDate)
+              // return snapshot.downloadURL;
+          }).catch(function(error) {
+            hideSpinner()
+            console.log(error);
+          });
+        }
+
       }
 
       function writeVideoData( videoUrl, videoThumbnailUrl, videoFileUrl, videoAuthor, videoDescription, videoDate) {

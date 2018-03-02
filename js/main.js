@@ -221,10 +221,16 @@ function getData(){
         var childData = childSnapshot.val();
         // Do what you want with these key/values here
 
-        var card = '<div class="col-md-4"><div class="card"><img onclick="toggleAddDialogWatchVideo(true, ' + childData.url + ')" src="' + childData.thumbnail + '" alt="Avatar" style="width:100%; height: 200px;">'
-        var cardContainer = '<div class="container" onclick="toggleAddDialogWatchVideo(true, ' + childData.url + ')"> <h4 class="video-author-name"> <b>'+ childData.author + '</b> </h4> <p class="card-description">' + childData.description +'</p><p class="video-date-published">' + childData.datePublish + '</p> </div> <a class="m-l-20 m-b-10" href="' + childData.file + '"  download="">Download dos Documentos</a>'
+        var card = '<div class="col-md-4"><div class="card" style="height: 397px;"><img onclick="toggleAddDialogWatchVideo(true, ' + childData.url + ')" src="' + childData.thumbnail + '" alt="Avatar" style="width:100%; height: 200px;">'
+        var cardContainer = '<div class="container" onclick="toggleAddDialogWatchVideo(true, ' + childData.url + ')"> <h4 class="video-author-name"> <b>'+ childData.author + '</b> </h4> <p class="card-description">' + childData.description +'</p><p class="video-date-published">' + childData.datePublish + '</p> </div> '
+        var downloadFile = '<a class="m-l-20 m-b-10" href="' + childData.file + '"  download="">Download dos Documentos</a>'
         var endDiv = '</div> </div>'
-        html = card + cardContainer + endDiv
+        if(childData.file.length == 0 ){
+            html = card + cardContainer + endDiv
+        }else{
+            html = card + cardContainer + downloadFile + endDiv
+        }
+
 
         $(".row").append(html);
 
@@ -347,10 +353,12 @@ function handleSignUp() {
   }, function(error) {
     // The Promise was rejected.
     console.error(error);
+    return
+
   });
 
-  hideSpinner()
-  alert('Cupom não existe!')
+  //hideSpinner()
+
 
 }
 
