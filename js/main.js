@@ -67,6 +67,11 @@
         $(thisAlert).removeClass('alert-validate');
     }
 
+    $('#overlay').click(function(e){
+       $('#leftMenu').removeClass('show-menu');
+       document.getElementById("overlay").style.display = "none";
+    });
+
 
 })(jQuery);
 
@@ -155,7 +160,6 @@ function hideSpinner() {
   spinner.setAttribute('hidden', true);
 }
 
-
 function showAdminPart(user) {
   firebase.database().ref('users/' + user.uid ).once('value')
   .then(function(snapshot) {
@@ -173,11 +177,15 @@ function showAdminPart(user) {
 }
 
 function openLeftMenu() {
-  document.getElementById("leftMenu").style.display = "block";
+  // document.getElementById("leftMenu").style.display = "block";
+  $('#leftMenu').toggleClass('show-menu');
+  document.getElementById("overlay").style.display = "block";
 }
 
 function closeLeftMenu() {
-  document.getElementById("leftMenu").style.display = "none";
+  $('#leftMenu').removeClass('show-menu');
+  document.getElementById("overlay").style.display = "none";
+  // document.getElementById("leftMenu").style.display = "none";
 }
 
 function logOutUser() {

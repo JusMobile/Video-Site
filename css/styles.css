@@ -230,6 +230,7 @@ iframe, object, embed {
   background-color:#fff;
   position:fixed!important;
   z-index:1000;
+  display: none;
   overflow:auto
 }
 
@@ -330,9 +331,21 @@ iframe, object, embed {
             transform: rotate(90deg); } }
 
 
+.show-menu {
+  display: block;
+}
 
-
-
+.overlay {
+    position: fixed;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,.5);
+    display: none;
+    z-index: 10;
+}
 
 
 
